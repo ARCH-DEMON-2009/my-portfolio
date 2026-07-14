@@ -50,6 +50,7 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
   html {
     scroll-behavior: smooth;
@@ -60,10 +61,92 @@
   }
 }
 
+/* ── Hero gradient heading ── */
 .hero-heading {
   background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+}
+
+/* ══════════════════════════════════════════════════
+   3-D PUSHABLE BUTTON  (.pb)
+   ══════════════════════════════════════════════════ */
+.pb {
+  position: relative;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 0.25s;
+  display: inline-block;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* bottom blur-shadow */
+.pb__shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: rgba(0, 255, 194, 0.18);
+  transform: translateY(2px);
+  transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+/* static darker edge/base */
+.pb__edge {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(
+    to right,
+    #003d2e 0%,
+    #007a5e 8%,
+    #007a5e 92%,
+    #003d2e 100%
+  );
+}
+
+/* raised front face */
+.pb__front {
+  display: block;
+  position: relative;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #00ffc4 0%, #00c896 60%, #00a87a 100%);
+  color: #0C0C0C;
+  font-weight: 700;
+  transform: translateY(-5px);
+  transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.4, 1);
+  white-space: nowrap;
+  letter-spacing: 0.06em;
+}
+
+/* hover — lift */
+.pb:hover {
+  filter: brightness(1.08);
+}
+.pb:hover .pb__front {
+  transform: translateY(-7px);
+  transition: transform 0.25s cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+.pb:hover .pb__shadow {
+  transform: translateY(5px);
+  transition: transform 0.25s cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+/* active — press in */
+.pb:active .pb__front {
+  transform: translateY(-2px);
+  transition: transform 0.034s;
+}
+.pb:active .pb__shadow {
+  transform: translateY(1px);
+  transition: transform 0.034s;
+}
+
+/* focus ring */
+.pb:focus-visible .pb__front {
+  box-shadow: 0 0 0 3px #0C0C0C, 0 0 0 6px #00ffc4;
 }
