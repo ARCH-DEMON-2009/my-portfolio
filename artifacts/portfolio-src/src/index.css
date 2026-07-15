@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+}
+
+:root, .dark {
+  --background: 0 0% 5%; /* #0C0C0C */
+  --foreground: 0 0% 100%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 166 100% 50%;
+  --primary: 166 100% 50%; /* Cyan */
+  --primary-foreground: 0 0% 5%;
+  --secondary: 268 100% 59%; /* Violet */
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 268 100% 59%;
+  --accent-foreground: 0 0% 100%;
+
+  --app-font-sans: 'Kanit', sans-serif;
+  --app-font-mono: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    overflow-x: hidden;
+  }
+}
+
+/* ── Hero gradient heading ── */
+.hero-heading {
+  background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ══════════════════════════════════════════════════
+   3-D PUSHABLE BUTTON  (.pb)
+   ══════════════════════════════════════════════════ */
+.pb {
+  position: relative;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 0.25s;
+  display: inline-block;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* bottom blur-shadow */
+.pb__shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: rgba(0, 255, 194, 0.18);
+  transform: translateY(2px);
+  transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+/* static darker edge/base */
+.pb__edge {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(
+    to right,
+    #003d2e 0%,
+    #007a5e 8%,
+    #007a5e 92%,
+    #003d2e 100%
+  );
+}
+
+/* raised front face */
+.pb__front {
+  display: block;
+  position: relative;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #00ffc4 0%, #00c896 60%, #00a87a 100%);
+  color: #0C0C0C;
+  font-weight: 700;
+  transform: translateY(-5px);
+  transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.4, 1);
+  white-space: nowrap;
+  letter-spacing: 0.06em;
+}
+
+/* hover — lift */
+.pb:hover {
+  filter: brightness(1.08);
+}
+.pb:hover .pb__front {
+  transform: translateY(-7px);
+  transition: transform 0.25s cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+.pb:hover .pb__shadow {
+  transform: translateY(5px);
+  transition: transform 0.25s cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+/* active — press in */
+.pb:active .pb__front {
+  transform: translateY(-2px);
+  transition: transform 0.034s;
+}
+.pb:active .pb__shadow {
+  transform: translateY(1px);
+  transition: transform 0.034s;
+}
+
+/* focus ring */
+.pb:focus-visible .pb__front {
+  box-shadow: 0 0 0 3px #0C0C0C, 0 0 0 6px #00ffc4;
+}

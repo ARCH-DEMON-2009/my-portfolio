@@ -6,7 +6,8 @@ import { defineConfig } from 'vite';
 import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
 
 // PORT is only required in dev/preview — not during a static `vite build`
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+const rawPort = process.env.PORT;
+const port = rawPort ? Number(rawPort) : 3000;
 
 // BASE_PATH defaults to '/' for Hostinger-style static deployment
 const basePath = process.env.BASE_PATH ?? '/';
@@ -53,7 +54,9 @@ export default defineConfig({
     strictPort: true,
     host: '0.0.0.0',
     allowedHosts: true,
-    fs: { strict: true },
+    fs: {
+      strict: true,
+    },
   },
   preview: {
     port,
