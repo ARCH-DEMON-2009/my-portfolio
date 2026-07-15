@@ -2,6 +2,9 @@
 
 # compiled output
 dist
+# allow the pre-built portfolio dist for Hostinger static deploy
+!artifacts/portfolio/dist
+!artifacts/portfolio/dist/**
 tmp
 out-tsc
 *.tsbuildinfo
