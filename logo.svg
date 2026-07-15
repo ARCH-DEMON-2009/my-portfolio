@@ -1,0 +1,32 @@
+<svg width="260" height="56" viewBox="0 0 260 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon mark -->
+  <rect x="0" y="0" width="52" height="52" rx="10" fill="#0C0C0C"/>
+  <rect x="0" y="0" width="52" height="52" rx="10" fill="none" stroke="url(#border)" stroke-width="1.2"/>
+  <!-- S mark scaled to 52px box -->
+  <rect x="10" y="9" width="32" height="7" rx="2" fill="url(#g1)"/>
+  <rect x="35" y="9" width="7" height="15" rx="2" fill="url(#g1)"/>
+  <rect x="10" y="23" width="32" height="6" rx="2" fill="url(#g2)"/>
+  <rect x="10" y="29" width="7" height="14" rx="2" fill="url(#g3)"/>
+  <rect x="10" y="38" width="32" height="7" rx="2" fill="url(#g3)"/>
+  <!-- Wordmark -->
+  <text x="64" y="32" font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" font-size="20" letter-spacing="5" fill="white">SHASHANK</text>
+  <text x="65" y="48" font-family="Courier New, Courier, monospace" font-weight="400" font-size="10" letter-spacing="3" fill="#666666">.SV · DEV</text>
+  <defs>
+    <linearGradient id="g1" x1="10" y1="9" x2="42" y2="9" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#FF3C00"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="10" y1="26" x2="42" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF5020"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="10" y1="43" x2="42" y2="43" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF3C00"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="border" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FF3C00" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+</svg>

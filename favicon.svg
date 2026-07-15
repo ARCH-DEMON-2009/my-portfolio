@@ -1,3 +1,28 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+  <rect width="180" height="180" rx="28" fill="#0C0C0C"/>
+  <!-- Geometric S mark: top bar, diagonal connector, bottom bar -->
+  <!-- Top cap -->
+  <rect x="36" y="32" width="108" height="22" rx="5" fill="url(#top)"/>
+  <!-- Upper right side drop -->
+  <rect x="122" y="32" width="22" height="48" rx="5" fill="url(#top)"/>
+  <!-- Center bar -->
+  <rect x="36" y="79" width="108" height="22" rx="5" fill="url(#mid)"/>
+  <!-- Lower left side drop -->
+  <rect x="36" y="100" width="22" height="48" rx="5" fill="url(#bot)"/>
+  <!-- Bottom cap -->
+  <rect x="36" y="126" width="108" height="22" rx="5" fill="url(#bot)"/>
+  <defs>
+    <linearGradient id="top" x1="36" y1="32" x2="144" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#FF3C00"/>
+    </linearGradient>
+    <linearGradient id="mid" x1="36" y1="79" x2="144" y2="79" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF5520"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="bot" x1="36" y1="148" x2="144" y2="148" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF3C00"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+  </defs>
 </svg>
