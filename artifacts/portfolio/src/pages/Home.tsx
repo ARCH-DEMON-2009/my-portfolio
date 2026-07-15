@@ -107,7 +107,14 @@ export default function Home() {
         {/* Navbar */}
         <nav className="relative z-10 w-full flex justify-between items-center mix-blend-exclusion">
           <FadeIn delay={0.1}>
-            <div className="text-base sm:text-xl font-bold tracking-widest uppercase text-white">SHASHANK</div>
+            <a href="/" aria-label="Shashank SV — Home">
+              <img
+                src="/logo.svg"
+                alt="Shashank SV logo"
+                className="h-8 sm:h-10 w-auto"
+                draggable={false}
+              />
+            </a>
           </FadeIn>
           <FadeIn delay={0.2}>
             <ul className="flex gap-4 sm:gap-8 md:gap-12 text-[10px] sm:text-sm uppercase tracking-widest font-mono text-white">
