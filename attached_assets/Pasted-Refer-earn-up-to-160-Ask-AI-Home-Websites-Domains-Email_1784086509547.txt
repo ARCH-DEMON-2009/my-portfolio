@@ -1,0 +1,218 @@
+Refer & earn up to $160
+
+Ask AI
+
+
+
+
+
+Home
+
+Websites
+
+Domains
+
+Emails
+
+More services
+
+Horizons
+
+Email marketing
+
+Ecomm
+
+Agents
+
+OpenClaw
+
+Hermes Agent
+
+VPS
+
+GPU
+
+API
+
+AI Router
+Website name
+me.shashanksv.com
+Search
+Dashboard
+
+Deployments
+
+Environment variables
+
+Runtime logs
+
+Hosting Plan
+
+Performance
+
+Analytics
+
+Security
+
+Domains
+
+Files
+
+Databases
+
+Advanced
+Deployments
+Deployment details
+Deployment
+
+me.shashanksv.com
+
+All deployments
+
+Redeploy
+Deployment build failed
+
+Please resolve the issues and redeploy.
+
+
+View analysis
+State:
+
+Build failed
+
+Repository:
+
+my-portfolio
+
+Author:
+
+Author:
+Shashank
+
+Deployed:
+
+2026-07-15 09:04
+
+•
+
+12s
+
+Branch:
+
+main
+
+Commit:
+
+0e1101a7 - Add pre-built portfolio dist for Hostinger static deploy
+
+Root directory:
+
+./
+
+Framework:
+
+Other
+
+Build and output settings:
+
+Custom
+
+Node version:
+
+22.x
+
+Build logs
+Lines: 23
+
+Search logs
+
+
+
+1
+
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
+
+2
+
+Scope: all 9 workspace projects
+
+3
+
+✓ Lockfile passes supply-chain policies (verified 23h ago)
+
+4
+
+Lockfile is up to date, resolution step is skipped
+
+5
+
+Progress: resolved 1, reused 0, downloaded 0, added 0
+
+6
+
+Packages: +473
+
+7
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+8
+
+Progress: resolved 473, reused 473, downloaded 0, added 391
+
+9
+
+Progress: resolved 473, reused 473, downloaded 0, added 473, done
+
+10
+
+
+11
+
+dependencies:
+
+12
+
++ @replit/connectors-sdk 0.4.1
+
+13
+
+
+14
+
+devDependencies:
+
+15
+
++ prettier 3.9.5
+
+16
+
++ typescript 5.9.3
+
+17
+
+
+18
+
+. preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+
+19
+
+. preinstall: Done
+
+20
+
+[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: esbuild@0.27.3
+
+21
+
+
+22
+
+Run "pnpm approve-builds" to pick which dependencies should be allowed to run scripts.
+
+23
+
+ERROR: Failed to install dependencies
+
