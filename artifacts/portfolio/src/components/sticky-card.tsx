@@ -1,4 +1,5 @@
-import { useRef } from "react";
+// Optimised: 1 useScroll (was 2), CSS transitions for terminal lines
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 interface StickyCardProps {
@@ -14,35 +15,55 @@ interface StickyCardProps {
   };
 }
 
+function lineClass(line: string) {
+  if (line.startsWith("$")) return "text-white/70";
+  if (line.startsWith("✓") || line.startsWith("●")) return "text-emerald-400";
+  if (line.startsWith("!")) return "text-amber-400";
+  if (line.startsWith("#")) return "text-white/25";
+  return "text-white/40";
+}
+
 export function StickyCard({ index, totalCards, project }: StickyCardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const termRef = useRef<HTMLDivElement>(null);
+  const [termVisible, setTermVisible] = useState(false);
 
+  // Single scroll tracker (was 2)
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "start start"],
-  });
-
-  const targetScale = 1 - (totalCards - 1 - index) * 0.05;
-
-  const { scrollYProgress: cardScrollProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  const scale = useTransform(cardScrollProgress, [0, 1], [1, targetScale]);
-  const opacity = useTransform(cardScrollProgress, [0, 0.8, 1], [1, 1, 0.5]);
+  const targetScale = 1 - (totalCards - 1 - index) * 0.05;
+  const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0.5]);
+
+  // One IntersectionObserver for terminal (replaces 11 motion.div whileInView per card)
+  useEffect(() => {
+    const el = termRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setTermVisible(true); obs.disconnect(); } },
+      { threshold: 0.25 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <div ref={containerRef} className="h-screen flex items-center justify-center sticky top-0">
       <motion.div
-        style={{ scale, top: `calc(6vh + ${index * 16}px)`, opacity }}
+        style={{ scale, top: `calc(6vh + ${index * 16}px)`, opacity, willChange: "transform, opacity" }}
         className="relative w-full max-w-6xl mx-auto h-[82vh] bg-[#111111] rounded-[40px] sm:rounded-[50px] border border-white/10 p-5 sm:p-8 md:p-10 flex flex-col origin-top shadow-[0_0_60px_rgba(0,0,0,0.6)] overflow-hidden"
       >
-        {/* Subtle grid background */}
+        {/* Subtle grid */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none rounded-[40px] sm:rounded-[50px]" />
 
         {/* Top accent line */}
-        <div className="absolute top-0 left-[10%] right-[10%] h-[1px]" style={{ background: `linear-gradient(90deg, transparent, ${project.accentColor}60, transparent)` }} />
+        <div
+          className="absolute top-0 left-[10%] right-[10%] h-[1px]"
+          style={{ background: `linear-gradient(90deg, transparent, ${project.accentColor}60, transparent)` }}
+        />
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 relative z-10">
@@ -59,8 +80,6 @@ export function StickyCard({ index, totalCards, project }: StickyCardProps) {
               </h3>
             </div>
           </div>
-
-          {/* 3D pushable "View Project" button */}
           <div className="shrink-0 self-start sm:self-center">
             <button className="pb group" aria-label={`View ${project.title}`}>
               <span className="pb__shadow" />
@@ -72,76 +91,52 @@ export function StickyCard({ index, totalCards, project }: StickyCardProps) {
           </div>
         </div>
 
-        {/* Main content: description + terminal + tech chips */}
+        {/* Main content */}
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 min-h-0 relative z-10">
-
-          {/* Left: description + tech stack */}
+          {/* Left */}
           <div className="flex flex-col gap-4">
-            <p className="text-white/55 text-sm sm:text-base leading-relaxed font-light">
-              {project.desc}
-            </p>
-
-            {/* Tech chips */}
+            <p className="text-white/55 text-sm sm:text-base leading-relaxed font-light">{project.desc}</p>
             <div className="flex flex-wrap gap-2 mt-auto">
               {project.tech.map((t) => (
                 <span
                   key={t}
                   className="px-3 py-1 rounded-full text-xs font-mono border"
-                  style={{
-                    borderColor: `${project.accentColor}40`,
-                    color: project.accentColor,
-                    background: `${project.accentColor}10`,
-                  }}
+                  style={{ borderColor: `${project.accentColor}40`, color: project.accentColor, background: `${project.accentColor}10` }}
                 >
                   {t}
                 </span>
               ))}
             </div>
-
-            {/* Status row */}
             <div className="flex items-center gap-3 pt-2 border-t border-white/5">
               <span className="w-2 h-2 rounded-full animate-pulse shrink-0" style={{ background: project.accentColor }} />
-              <span className="font-mono text-xs text-white/35 uppercase tracking-widest">
-                Live · Production
-              </span>
+              <span className="font-mono text-xs text-white/35 uppercase tracking-widest">Live · Production</span>
             </div>
           </div>
 
-          {/* Right: mock terminal */}
+          {/* Right: terminal */}
           <div className="flex flex-col bg-[#0A0A0A] rounded-2xl border border-white/8 overflow-hidden min-h-0">
-            {/* Terminal chrome */}
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/6 shrink-0">
               <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
               <span className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
-              <span className="ml-3 font-mono text-xs text-white/25 truncate">{project.title.toLowerCase().replace(/\s/g, "-")}/main</span>
+              <span className="ml-3 font-mono text-xs text-white/25 truncate">
+                {project.title.toLowerCase().replace(/\s/g, "-")}/main
+              </span>
             </div>
-
-            {/* Terminal lines */}
-            <div className="flex-1 p-4 overflow-auto font-mono text-xs leading-6 space-y-0.5">
+            <div ref={termRef} className="flex-1 p-4 overflow-auto font-mono text-xs leading-6 space-y-0.5">
               {project.lines.map((line, i) => (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, x: -8 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.3 }}
-                  className={
-                    line.startsWith("$")
-                      ? "text-white/70"
-                      : line.startsWith("✓") || line.startsWith("●")
-                      ? "text-emerald-400"
-                      : line.startsWith("!")
-                      ? "text-amber-400"
-                      : line.startsWith("#")
-                      ? "text-white/25"
-                      : "text-white/40"
-                  }
+                  className={lineClass(line)}
+                  style={{
+                    opacity: termVisible ? 1 : 0,
+                    transform: termVisible ? "translateX(0)" : "translateX(-8px)",
+                    transition: `opacity 0.3s ease ${i * 0.055}s, transform 0.3s ease ${i * 0.055}s`,
+                  }}
                 >
                   {line}
-                </motion.div>
+                </div>
               ))}
-              {/* Blinking cursor */}
               <div className="flex items-center gap-1 text-white/60 pt-1">
                 <span>$</span>
                 <span className="w-2 h-4 bg-white/60 animate-pulse ml-1" />

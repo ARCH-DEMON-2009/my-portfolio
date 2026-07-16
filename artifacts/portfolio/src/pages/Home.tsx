@@ -5,7 +5,6 @@ import { MarqueeRow } from "@/components/ui/marquee-row";
 import { ContactButton } from "@/components/ui/contact-button";
 import { StickyCard } from "@/components/sticky-card";
 import { LoadingScreen } from "@/components/ui/loading-screen";
-import { motion } from "framer-motion";
 
 const skillsRow1 = ["JavaScript","TypeScript","Python","Rust","Go","C++","Kotlin","Swift","React","Next.js","Vue","Flutter","Django","FastAPI"];
 const skillsRow2 = ["PostgreSQL","MongoDB","Redis","Docker","Kubernetes","Selenium","Puppeteer","Frida","Ghidra","Burp Suite","Playwright","AWS","GCP"];
@@ -93,7 +92,7 @@ export default function Home() {
         {/* Background Video */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <video
-            autoPlay muted loop playsInline
+            autoPlay muted loop playsInline preload="none"
             className="w-full h-full object-cover opacity-40"
           >
             <source
@@ -179,9 +178,7 @@ export default function Home() {
               className="group flex items-center gap-4 text-primary uppercase font-mono tracking-widest text-sm border-b border-primary/30 pb-2 hover:border-primary transition-colors"
             >
               Contact Me
-              <motion.span animate={{ x: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
-                →
-              </motion.span>
+              <span className="animate-bounce-x">→</span>
             </button>
           </FadeIn>
         </div>

@@ -1,48 +1,61 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+// rAF + direct DOM mutation — zero React re-renders on mouse move
+import { useEffect, useRef } from "react";
 
 export function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+  const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    if (window.matchMedia("(max-width: 768px)").matches) return;
+
+    let targetX = -100, targetY = -100;
+    let currentX = -100, currentY = -100;
+    let rafId: number;
+    let isHovering = false;
+
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    const tick = () => {
+      currentX = lerp(currentX, targetX, 0.14);
+      currentY = lerp(currentY, targetY, 0.14);
+      const el = cursorRef.current;
+      if (el) {
+        el.style.transform = `translate(${currentX - 16}px, ${currentY - 16}px) scale(${isHovering ? 2 : 1})`;
+      }
+      rafId = requestAnimationFrame(tick);
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName.toLowerCase() === 'a' || target.tagName.toLowerCase() === 'button' || target.closest('a') || target.closest('button')) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
+    const onMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    };
+
+    const onOver = (e: MouseEvent) => {
+      const t = e.target as HTMLElement;
+      const hover = !!(t.closest("a") || t.closest("button"));
+      if (hover !== isHovering) {
+        isHovering = hover;
       }
     };
 
-    window.addEventListener("mousemove", updateMousePosition);
-    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mouseover", onOver, { passive: true });
+    rafId = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-      window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseover", onOver);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
-  if (typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches) return null;
-
   return (
-    <motion.div
-      className="fixed top-0 left-0 w-8 h-8 rounded-full bg-white pointer-events-none z-50 flex items-center justify-center mix-blend-exclusion"
-      animate={{
-        x: mousePosition.x - 16,
-        y: mousePosition.y - 16,
-        scale: isHovering ? 2 : 1,
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 500,
-        damping: 28,
-        mass: 0.5
+    <div
+      ref={cursorRef}
+      className="fixed top-0 left-0 w-8 h-8 rounded-full bg-white pointer-events-none z-[9998] mix-blend-exclusion"
+      style={{
+        willChange: "transform",
+        transform: "translate(-100px, -100px)",
+        transition: "scale 0.2s ease",
       }}
     />
   );
