@@ -81,6 +81,65 @@ const projects = [
   },
 ];
 
+const certificates = [
+  {
+    title: "Google Cloud Professional Machine Learning Engineer",
+    issuer: "Google Cloud",
+    image: "/certificates/google-cloud-ml-engineer.jpg",
+    focus: "AI Automation & Intelligent Agents",
+    description: "Recognizes expertise in machine learning engineering, generative AI, intelligent agents, model deployment, and production-grade ML systems on Google Cloud.",
+  },
+  {
+    title: "Microsoft Certified: Cybersecurity Architect Expert",
+    issuer: "Microsoft",
+    image: "/certificates/microsoft-cybersecurity-architect.jpg",
+    focus: "Cybersecurity & Security Architecture",
+    description: "Covers designing, implementing, and securing enterprise technology environments through advanced cybersecurity architecture and security practices.",
+  },
+  {
+    title: "AWS Certified Solutions Architect",
+    issuer: "AWS",
+    image: "/certificates/aws-solutions-architect.jpg",
+    focus: "Cloud & DevOps",
+    description: "Demonstrates capability in cloud computing, cloud architecture, and DevOps using Amazon Web Services.",
+  },
+  {
+    title: "AWS Certified Developer",
+    issuer: "AWS Training and Certification",
+    image: "/certificates/aws-full-stack-developer.jpg",
+    focus: "Full-Stack Development",
+    description: "Recognizes full-stack development knowledge across application delivery, cloud services, and modern AWS development workflows.",
+  },
+  {
+    title: "Microsoft Azure Developer Associate",
+    issuer: "Microsoft Azure",
+    image: "/certificates/microsoft-azure-developer.jpg",
+    focus: "Backend + APIs",
+    description: "Focuses on building backend services and APIs with Azure, including cloud application development and service integration.",
+  },
+  {
+    title: "Google Associate Android Developer",
+    issuer: "Google",
+    image: "/certificates/google-android-developer.jpg",
+    focus: "Mobile App Development",
+    description: "Covers Android application development, mobile architecture, interface implementation, and production-ready app workflows.",
+  },
+  {
+    title: "Confluent Certified Developer for Apache Kafka",
+    issuer: "Confluent",
+    image: "/certificates/confluent-kafka-developer.jpg",
+    focus: "Real-Time Applications",
+    description: "Demonstrates proficiency in Apache Kafka, event streaming, stream processing, event-driven architecture, and real-time data pipelines.",
+  },
+  {
+    title: "Oracle Database Certified Professional",
+    issuer: "Oracle University",
+    image: "/certificates/oracle-database-professional.jpg",
+    focus: "Database Engineering",
+    description: "Covers Oracle Database, SQL, database administration, performance optimization, and core database engineering practices.",
+  },
+];
+
 export default function Home() {
   return (
     <div className="relative bg-[#0C0C0C] text-white selection:bg-primary selection:text-black font-sans">
@@ -119,6 +178,7 @@ export default function Home() {
             <ul className="flex gap-4 sm:gap-8 md:gap-12 text-[10px] sm:text-sm uppercase tracking-widest font-mono text-white">
               <li><a href="#about"    className="hover:text-primary transition-colors">About</a></li>
               <li className="hidden sm:block"><a href="#skills" className="hover:text-primary transition-colors">Skills</a></li>
+              <li className="hidden md:block"><a href="#certifications" className="hover:text-primary transition-colors">Certs</a></li>
               <li><a href="#projects" className="hover:text-primary transition-colors">Projects</a></li>
               <li><a href="#contact"  className="hover:text-primary transition-colors">Contact</a></li>
             </ul>
@@ -218,7 +278,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 5. PROJECTS ── */}
+      {/* ── 5. CERTIFICATIONS ── */}
+      <section id="certifications" className="bg-[#111111] text-white rounded-t-[40px] sm:rounded-t-[60px] relative z-25 py-20 sm:py-32 px-5 sm:px-8 md:px-12 mt-[-40px] sm:mt-[-60px]">
+        <div className="max-w-7xl mx-auto">
+          <FadeIn>
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 sm:mb-20">
+              <div>
+                <p className="font-mono text-primary text-xs uppercase tracking-[0.25em] mb-4">Credentials / 08</p>
+                <h2 className="hero-heading text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter">
+                  Certifications
+                </h2>
+              </div>
+              <p className="max-w-md text-white/50 text-base sm:text-lg leading-relaxed">
+                A selection of cloud, mobile, security, data, and AI credentials that support the systems I build.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            {certificates.map((certificate, i) => (
+              <FadeIn key={certificate.title} delay={Math.min(i * 0.05, 0.3)} y={24}>
+                <article className="group h-full rounded-2xl border border-white/10 bg-[#0C0C0C] overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+                  <a href={certificate.image} target="_blank" rel="noreferrer" aria-label={`Open ${certificate.title} certificate`}>
+                    <div className="aspect-[3/2] overflow-hidden bg-white">
+                      <img
+                        src={certificate.image}
+                        alt={`${certificate.title} certificate awarded to Shashank`}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                    </div>
+                  </a>
+                  <div className="p-5">
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-primary mb-2">{certificate.issuer}</p>
+                    <h3 className="text-lg font-bold uppercase leading-tight mb-3">{certificate.title}</h3>
+                    <p className="text-xs font-mono uppercase tracking-wider text-white/45 mb-3">{certificate.focus}</p>
+                    <p className="text-sm text-white/55 leading-relaxed">{certificate.description}</p>
+                  </div>
+                </article>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. PROJECTS ── */}
       <section id="projects" className="bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[60px] relative z-30 py-20 sm:py-32 px-5 sm:px-8 md:px-12 mt-[-40px] sm:mt-[-60px]">
         <div className="max-w-7xl mx-auto mb-20 sm:mb-32">
           <FadeIn>
@@ -235,7 +340,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 6. STATS ── */}
+      {/* ── 7. STATS ── */}
       <section className="py-16 sm:py-24 bg-[#050505] border-y border-white/10 relative z-40 mt-[-50vh]">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
           {[
@@ -252,7 +357,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 7. CONTACT / FOOTER ── */}
+      {/* ── 8. CONTACT / FOOTER ── */}
       <section id="contact" className="min-h-[100dvh] bg-[#0C0C0C] flex flex-col justify-between pt-24 sm:pt-32 pb-8 px-5 sm:px-8 md:px-12 relative z-40">
         <div className="flex-1 flex flex-col items-center justify-center text-center">
           <FadeIn y={30}>
@@ -264,16 +369,18 @@ export default function Home() {
 
           <FadeIn delay={0.2} y={20}>
             <a
-              href="mailto:info@shashanksv.com"
+              href="https://t.me/ShashankHelpRobot"
+              target="_blank"
+              rel="noreferrer"
               className="text-xl sm:text-2xl md:text-4xl text-primary hover:text-white transition-colors duration-300 border-b-2 border-primary hover:border-white pb-2 inline-block mb-12 sm:mb-16 break-all sm:break-normal"
             >
-              info@shashanksv.com
+              @ShashankHelpRobot
             </a>
           </FadeIn>
 
           {/* 3D pushable hire-me button */}
           <FadeIn delay={0.35} y={20}>
-            <button className="pb" onClick={() => { window.location.href = 'mailto:info@shashanksv.com'; }}>
+            <button className="pb" onClick={() => { window.open('https://t.me/ShashankHelpRobot', '_blank', 'noopener,noreferrer'); }}>
               <span className="pb__shadow" />
               <span className="pb__edge" />
               <span className="pb__front px-10 py-4 text-sm font-bold uppercase tracking-widest rounded-[12px]">
