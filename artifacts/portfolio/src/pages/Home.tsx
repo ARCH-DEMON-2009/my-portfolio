@@ -5,6 +5,7 @@ import { MarqueeRow } from "@/components/ui/marquee-row";
 import { ContactButton } from "@/components/ui/contact-button";
 import { StickyCard } from "@/components/sticky-card";
 import { LoadingScreen } from "@/components/ui/loading-screen";
+import { useEffect, useState } from "react";
 
 const skillsRow1 = ["JavaScript","TypeScript","Python","Rust","Go","C++","Kotlin","Swift","React","Next.js","Vue","Flutter","Django","FastAPI"];
 const skillsRow2 = ["PostgreSQL","MongoDB","Redis","Docker","Kubernetes","Selenium","Puppeteer","Frida","Ghidra","Burp Suite","Playwright","AWS","GCP"];
@@ -140,11 +141,92 @@ const certificates = [
   },
 ];
 
+type Certificate = (typeof certificates)[number];
+
+function CertificateLightbox({
+  certificate,
+  onClose,
+}: {
+  certificate: Certificate;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/90 p-4 sm:p-8 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${certificate.title} certificate preview`}
+      onClick={onClose}
+    >
+      <div
+        className="relative flex max-h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#111111] shadow-[0_0_80px_rgba(0,255,194,0.12)]"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3 sm:px-6">
+          <div className="min-w-0">
+            <p className="truncate font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
+              {certificate.issuer} / certificate preview
+            </p>
+            <h2 className="truncate text-sm font-bold uppercase text-white sm:text-base">
+              {certificate.title}
+            </h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close certificate preview"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-xl text-white/70 transition-colors hover:border-primary hover:text-primary"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="overflow-auto bg-[#080808] p-3 sm:p-8">
+          <div className="mx-auto max-w-5xl border border-white/15 bg-white p-1 shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_20px_60px_rgba(0,0,0,0.55)] sm:p-2">
+            <img
+              src={certificate.image}
+              alt={`${certificate.title} certificate awarded to Shashank`}
+              className="block h-auto w-full"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1 border-t border-white/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <p className="text-xs text-white/50">{certificate.focus}</p>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-white/30">
+            Click outside or press Esc to close
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
+  const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
+
   return (
     <div className="relative bg-[#0C0C0C] text-white selection:bg-primary selection:text-black font-sans">
       <LoadingScreen />
       <CustomCursor />
+      {selectedCertificate && (
+        <CertificateLightbox
+          certificate={selectedCertificate}
+          onClose={() => setSelectedCertificate(null)}
+        />
+      )}
 
       {/* ── 1. HERO ── */}
       <section className="relative h-[100dvh] w-full flex flex-col justify-between overflow-hidden px-5 py-6 sm:px-8 sm:py-8 md:px-12 md:py-12">
@@ -299,7 +381,12 @@ export default function Home() {
             {certificates.map((certificate, i) => (
               <FadeIn key={certificate.title} delay={Math.min(i * 0.05, 0.3)} y={24}>
                 <article className="group h-full rounded-2xl border border-white/10 bg-[#0C0C0C] overflow-hidden transition-transform duration-300 hover:-translate-y-1">
-                  <a href={certificate.image} target="_blank" rel="noreferrer" aria-label={`Open ${certificate.title} certificate`}>
+                  <button
+                    type="button"
+                    className="block w-full cursor-zoom-in text-left"
+                    onClick={() => setSelectedCertificate(certificate)}
+                    aria-label={`Zoom ${certificate.title} certificate`}
+                  >
                     <div className="aspect-[3/2] overflow-hidden bg-white">
                       <img
                         src={certificate.image}
@@ -309,7 +396,7 @@ export default function Home() {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     </div>
-                  </a>
+                  </button>
                   <div className="p-5">
                     <p className="font-mono text-[10px] uppercase tracking-widest text-primary mb-2">{certificate.issuer}</p>
                     <h3 className="text-lg font-bold uppercase leading-tight mb-3">{certificate.title}</h3>
